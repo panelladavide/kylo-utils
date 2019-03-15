@@ -22,7 +22,7 @@ KPW = config.get("configuration", "password")
 feeds_id = []
 feeds_name = []
 l = [2, 3]
-for i in range(208, 226):
+for i in range(231, 236):
     print(i)
     res = requests.get(FEEDS_BY_NAME_URL+"test.test_persisted_provenance_"+str(i), headers=HEADER2, auth=(KUSER, KPW))
     print(res.status_code)
