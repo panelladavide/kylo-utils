@@ -1,10 +1,10 @@
+import json
 """
-Servizio per il fail dei job in running su kylo:
+Servizio per la creazione dei Feeds su kylo:
 
 per creare il json del payload esegui questa riga sul terminale
 for i in {25..50}; do sed 's/test_persisted_provenance_24/test_persisted_provenance_'${i}'/g' test_persisted_provenance.json > create_feeds/new_file${i}.json; done
 """
-import json
 import requests
 import configparser
 config = configparser.ConfigParser()
@@ -19,7 +19,7 @@ HEADER2 = {'Accept': 'application/json', 'Content-type': 'application/json'}
 KUSER = config.get("configuration", "username")
 KPW = config.get("configuration", "password")
 
-for i in range(200, 251):
+for i in range(500, 520):
     print(i)
     with open("/home/davide/PycharmProjects/script_ddl/create_feeds/new_file" + str(i) + ".json") as json_data:
         d = json.load(json_data)

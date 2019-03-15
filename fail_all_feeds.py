@@ -34,13 +34,14 @@ jobs = res.json()['data']
 print(jobs)
 for job in jobs:
     print(job['feedName'])
-    if job['feedName'] == 'test.test_persisted_provenance':
-        print(job['executionId'])
-        fail_id_url = FAIL_URL+'/'+str(job['executionId'])+'/fail'
-        print(fail_id_url)
-        res = requests.post(fail_id_url, headers=HEADER, auth=(KUSER, KPW))
-    else:
-        print("non pac_anac.pac_anac_o_anac_pub_simog:\n")
-        print(job['feedName'])
-        print("feed rimane in running")
-print(res.json())
+    for i in range(200, 251):
+        if job['feedName'] == 'test.test_persisted_provenance_'+str(i):
+            print(job['executionId'])
+            fail_id_url = FAIL_URL+'/'+str(job['executionId'])+'/fail'
+            print(fail_id_url)
+            res = requests.post(fail_id_url, headers=HEADER, auth=(KUSER, KPW))
+        else:
+            print("non pac_anac.pac_anac_o_anac_pub_simog:\n")
+            print(job['feedName'])
+            print("feed rimane in running")
+    print(res.json())
