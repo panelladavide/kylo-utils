@@ -32,7 +32,7 @@ def get_running_id(url, header):
     return f_id
 
 
-res = requests.get("http://127.0.0.1:8400/proxy/v1/jobs/failed?limit=2000&start=0", headers=HEADER, auth=(KUSER, KPW))
+res = requests.get(JOBS_URL, headers=HEADER, auth=(KUSER, KPW))
 jobs = res.json()['data']
 print(jobs)
 for job in jobs:
