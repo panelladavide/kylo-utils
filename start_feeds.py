@@ -17,7 +17,7 @@ HEADER2 = {'Accept': 'application/json', 'Content-type': 'application/json'}
 KUSER = config.get("configuration", "username")
 KPW = config.get("configuration", "password")
 feeds = []
-for i in range(500, 519):
+for i in range(600, 619):
     res = requests.get(FEEDS_URL+"test.test_persisted_provenance_"+str(i), headers=HEADER2, auth=(KUSER, KPW))
     response = res.json()
     print("\n"+str(i))

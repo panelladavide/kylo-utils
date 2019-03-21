@@ -19,7 +19,7 @@ HEADER2 = {'Accept': 'application/json', 'Content-type': 'application/json'}
 KUSER = config.get("configuration", "username")
 KPW = config.get("configuration", "password")
 
-for i in range(500, 520):
+for i in range(600, 620):
     print(i)
     with open("/home/davide/PycharmProjects/script_ddl/create_feeds/new_file" + str(i) + ".json") as json_data:
         d = json.load(json_data)
