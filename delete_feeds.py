@@ -24,12 +24,12 @@ feeds_name = []
 feeds_not_deleted = []
 feeds_deleted = []
 l = [2, 3]
-for i in range(502, 520):
+for i in range(400, 420):
     print(i)
     res = requests.get(FEEDS_BY_NAME_URL+"test.test_persisted_provenance_"+str(i), headers=HEADER2, auth=(KUSER, KPW))
     print(res.status_code)
-    print(res.content)
-    if res.status_code == 200:
+    print(str(res.content))
+    if str("b''") not in str(res.content):
         response = res.json()
         print(str(i))
         print(response['systemFeedName'])
@@ -49,20 +49,11 @@ for i in range(502, 520):
             feeds_not_deleted.append(response['feedId'])
 
     else:
-        pass
-# print("lenfeeds_id: "+str(len(feeds_name)))
-#
-# for f in range(0, len(feeds_name)):
-#     print(f)
-#     print("deleting feed: " + feeds_name[f])
-#     print("url: " + str(FEEDS_URL)+str(feeds_id[f]))
-#     r = requests.delete(FEEDS_URL+feeds_id[f], headers=HEADER2, auth=(KUSER, KPW))
-#     print("il feed " + feeds_name[f] + " ha dato risposta: ")
-#     print(r.status_code)
-#     print(r.content)
+        if str("b''") in str(res.content):
+            pass
 end = time.time()
 t = end - start
 print("tempo di esecuzione: " + str(t))
 
-print("feeds cancellati: " + feeds_deleted)
-print("feeds non cancellati: " + feeds_not_deleted)
+print("feeds cancellati: " + str(feeds_deleted))
+print("feeds non cancellati: " + str(feeds_not_deleted))
