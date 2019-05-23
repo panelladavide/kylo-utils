@@ -32,10 +32,10 @@ print(feeds_filtered)
 print(len(feeds_filtered))
 for feed in feeds_filtered:
     if feed['categoryAndFeedSystemName'] not in ['test.kafka1','pac_inapp.pac_inapp_o_t456_24date_50r_test','pac_inapp.pac_inapp_o_t456_24date_50r_test2','regione_toscana.regione_toscana_o_monitoraggio_test_finale_cri','regione_umbria.regione_umbria_o_mad_progetti_economics_totali_greatest','regione_umbria.regione_umbria_o_out_mad_progetti_economics_totali_greatest','regione_umbria.regione_umbria_o_test_indicatori','regione_umbria.regione_umbria_o_test_pdrt_all_a','daf_data.test_cciss']:
-        # print("disabilito il feed: "+feed['categoryAndFeedSystemName'])
+        print("disabilito il feed: "+feed['categoryAndFeedSystemName'])
         feeds_to_disable.append(feed['feedId'])
-        # disable = requests.post(DISABLE_URL+str(feed['feedId']), headers=HEADER2, auth=(KUSER, KPW))
-        # print(disable.status_code)
+        disable = requests.post(DISABLE_URL+str(feed['feedId']), headers=HEADER2, auth=(KUSER, KPW))
+        print(disable.status_code)
         print("cancello il feed: " + str(feed['systemFeedName']))
         print("url: " + str(FEEDS_URL) + str(feed['feedId']))
         r = requests.delete(FEEDS_URL + feed['feedId'], headers=HEADER2, auth=(KUSER, KPW))
