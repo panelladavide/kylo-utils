@@ -3,7 +3,7 @@ import json
 Servizio per la creazione dei Feeds su kylo:
 
 per creare il json del payload esegui questa riga sul terminale
-for i in {25..50}; do sed 's/test_persisted_provenance_24/test_persisted_provenance_'${i}'/g' test_persisted_provenance.json > create_feeds/new_file${i}.json; done
+for i in {700..719}; do sed 's/test_persisted_provenance_24/test_persisted_provenance_'${i}'/g' test_persisted_provenance.json > create_feeds/new_file${i}.json; done
 """
 import requests
 import configparser
@@ -19,7 +19,7 @@ HEADER2 = {'Accept': 'application/json', 'Content-type': 'application/json'}
 KUSER = config.get("configuration", "username")
 KPW = config.get("configuration", "password")
 
-for i in range(600, 620):
+for i in range(900, 950):
     print(i)
     with open("/home/davide/PycharmProjects/script_ddl/create_feeds/new_file" + str(i) + ".json") as json_data:
         d = json.load(json_data)

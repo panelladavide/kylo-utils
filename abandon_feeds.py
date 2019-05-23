@@ -1,5 +1,5 @@
 """
-Servizio per il fail dei job in running su kylo:
+Servizio per il abandon dei job falliti su kylo:
 
 """
 import requests

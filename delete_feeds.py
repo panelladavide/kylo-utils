@@ -24,7 +24,7 @@ feeds_name = []
 feeds_not_deleted = []
 feeds_deleted = []
 l = [2, 3]
-for i in range(400, 420):
+for i in range(900, 950):
     print(i)
     res = requests.get(FEEDS_BY_NAME_URL+"test.test_persisted_provenance_"+str(i), headers=HEADER2, auth=(KUSER, KPW))
     print(res.status_code)
