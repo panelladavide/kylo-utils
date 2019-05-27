@@ -23,7 +23,14 @@ Then launch create_feeds.py it will create 10 feeds on kylo based on the test_te
 
 The schema of the table which will be created is like the `test_file.csv` file
 
-#### create_opendata_table.py
+#### create_opendata_kafka.py
+This script creates a table on HDFS using the Impala query engine and taking all data in input.
+
+#### create_opendata_kafka_request.py
+This script creates a table on HDFS using the Impala query engine and taking all data in input, except the columns of the table, that are retrievied by requesting elasticserch.
+
+#### delete_opendata_feed.py
+This script deletes a table on HDFS using Impala query engine, taking organization, database and table name.
 
 #### delete_feeds.py
 Delete all feeds by name

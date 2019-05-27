@@ -102,10 +102,10 @@ config.read(".config_test")
 USER = config.get("configuration", "username")
 PW = config.get("configuration", "password")
 
-input1 = {"id": "75", "author": "macerata_default_admin", "organization": "macerata", "dataSetName": "ECON__policy", "resourceName": "Imprese_Attive_in_Italia_per_Territorio_Settore_Ateco_e_Tempo_frequenza_mensile_"}
+# input1 = {"id": "75", "author": "macerata_default_admin", "organization": "macerata", "dataSetName": "ECON__policy", "resourceName": "Imprese_Attive_in_Italia_per_Territorio_Settore_Ateco_e_Tempo_frequenza_mensile_"}
 # input1 = {"id": "75", "author": "macerata_default_admin", "organization": "macerata", "dataSetName": "ECON__policy", "resourceName": "Imprese_Attive_in_Italia_per_Territorio_Settore_Ateco_e_Tempo_frequenza_mensile_"}
 # input1 = {"id": "451", "author": "parco_salento_default_admin", "organization": "parco_salento", "dataSetName": "ECON__policy", "resourceName": "barbieri_e_affini"}
-# input1 = json.loads(sys.stdin.read())
+input1 = json.loads(sys.stdin.read())
 
 author = str(input1['author'])
 organization = str(input1['organization'])
