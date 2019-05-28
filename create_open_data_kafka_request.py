@@ -70,6 +70,8 @@ def get_columns():
             if separator == "," or ";" or "|" or ":":
                 for field in fields:
                     column = clean_characters(str(field['name']))
+                    if not column:
+                        column = "unknown_column"
                     columns += "`" + column + "`" + " " + str(field['`type`']).upper() + ",\n"
                 columns = columns[:-2]
                 columns += "\n)"
@@ -92,7 +94,7 @@ def create_table(cursor):
         # output = {"failure": "true", "failure_reason": "Unable to create table `'{database_name}'`.`'{table_name}'`, caused by: '{str(e)}'"}
         # print(json.dumps(output))
         print('{"failure": "true",')
-        print('"failure_reason": "Unable to create table `' + database_name + "`.`" + table_name + '`, caused by: ' + str(e) + '"}')
+        print('"failure_reason": "Unable to create table `' + database_name + "`.`" + table_name + '`, caused by: ' + clean_characters(str(e)) + '"}')
         exit()
 
 

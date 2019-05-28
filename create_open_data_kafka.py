@@ -48,6 +48,8 @@ def get_columns():
         if separator == "," or ";" or "|" or ":":
             for field in fields:
                 column = clean_characters(str(field['name']))
+                if not column:
+                    column = "unknown_column"
                 columns += "`" + column + "`" + " " + str(field['type']).upper() + ",\n"
             columns = columns[:-2]
             columns += "\n)"
