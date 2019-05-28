@@ -70,7 +70,7 @@ def create_table(cursor):
         cursor.execute(ddl)
     except Exception as e:
         print('{"failure": "true",')
-        print('"failure_reason": "Unable to create table `' + database_name + "`.`" + table_name + '`, caused by: ' + str(e) + '"}')
+        print('"failure_reason": "Unable to create table `' + database_name + "`.`" + table_name + '`, caused by: ' + clean_characters(str(e)) + '"}')
         exit()
 
 
