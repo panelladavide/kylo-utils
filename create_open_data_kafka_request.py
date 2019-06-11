@@ -19,8 +19,10 @@ def clean_characters(input):
 
         return str(input)
     except Exception as e:
-        print('{"failure": "true",')
-        print('"failure_reason": "Unable to do data cleansing, caused by: ' + str(e) + '"}')
+        error_message_array = ['{"failure": "true", "failure_reason": "Unable to do data cleansing, caused by: ', '"}']
+        str_length = max_string_length - len(''.join(error_message_array))
+        error_message = error_message_array[0] + str(e)[:str_length] + error_message_array[1]
+        print(error_message)
         exit()
 
 #questa funzione si connette al servizio Impala
@@ -30,8 +32,10 @@ def impala_connection():
         cursor = conn.cursor()
         return cursor
     except Exception as e:
-        print('{"failure": "true",')
-        print('"failure_reason": "Unable to connect to impala service, caused by: ' + str(e) + '"}')
+        error_message_array = ['{"failure": "retry", "failure_reason": "Unable to connect to impala service, caused by: ', '"}']
+        str_length = max_string_length - len(''.join(error_message_array))
+        error_message = error_message_array[0] + str(e)[:str_length] + error_message_array[1]
+        print(error_message)
         exit()
 
 def create_db(cursor):
@@ -39,16 +43,17 @@ def create_db(cursor):
         ddl = 'CREATE DATABASE IF NOT EXISTS ' + database_name + ';'
         cursor.execute(ddl)
     except Exception as e:
-        print('{"failure": "true",')
-        print('"failure_reason": "Unable to create database `' + database_name + '`, caused by: ' + str(e) + '"}')
+        error_message_array = ['{"failure": "true", "failure_reason": "Unable to create database `', '`, caused by: ', '"}']
+        str_length = max_string_length - len(''.join(error_message_array) + str(database_name))
+        error_message = error_message_array[0] + str(database_name) + error_message_array[1] + str(e)[:str_length] + error_message_array[2]
+        print(error_message)
         exit()
 
 def get_columns():
     url = "http://elk-master-1.teamdigitale.test:9200/ckan/catalog_test/_search"
     r = requests.post(url, json=PAYLOAD)
     if r.status_code >= 400:
-        print('{"failure": "true",')
-        print('"failure_reason": "Response Status code: ' + str(r.status_code) + '"}')
+        print('{"failure": "true", "failure_reason": "Response Status code: ' + str(r.status_code) + '"}')
         exit()
     else:
         try:
@@ -77,26 +82,35 @@ def get_columns():
                 columns += "\n)"
                 return columns, separator
             else:
-                print('{"failure": "true",')
-                print('"failure_reason": "Separator: `' + str(separator) + '` not recognized"}')
+                print('{"failure": "true", "failure_reason": "Separator: `' + str(separator) + '` not recognized"}')
                 exit()
+        except IndexError as e:
+            error_message_array = ['{"failure": "true", "failure_reason": "Unable to extract columns, caused by: ','"}']
+            str_length = max_string_length - len(''.join(error_message_array))
+            error_message = error_message_array[0] + str(e)[:str_length] + error_message_array[1]
+            print(error_message)
+            exit()
         except Exception as e:
-            print('{"failure": "true",')
-            print('"failure_reason": "Unable to extract columns, caused by: ' + str(e) + '"}')
+            error_message_array = ['{"failure": "retry", "failure_reason": "Unable to extract columns, caused by: ', '"}']
+            str_length = max_string_length - len(''.join(error_message_array))
+            error_message = error_message_array[0] + str(e)[:str_length] + error_message_array[1]
+            print(error_message)
             exit()
 
 def create_table(cursor):
     try:
         ddl = 'CREATE EXTERNAL TABLE IF NOT EXISTS ' + str(database_name).lower() + "." + "`" + str(
-            table_name + "_" + progressive_number).lower() + "`" + "\n" + columns + '\nROW FORMAT DELIMITED FIELDS TERMINATED BY \'' + separator + '\' STORED AS TEXTFILE\nLOCATION \'' + HDFS_PATH + '\' TBLPROPERTIES ("skip.header.line.count"="1");'
+            table_name_impala + "_" + progressive_number).lower() + "`\n" + columns + '\nROW FORMAT DELIMITED FIELDS TERMINATED BY \'' + separator + '\' STORED AS TEXTFILE\nLOCATION \'' + HDFS_PATH + '\' TBLPROPERTIES ("skip.header.line.count"="1");'
         cursor.execute(ddl)
     except Exception as e:
-        # output = {"failure": "true", "failure_reason": "Unable to create table `'{database_name}'`.`'{table_name}'`, caused by: '{str(e)}'"}
-        # print(json.dumps(output))
-        print('{"failure": "true",')
-        print('"failure_reason": "Unable to create table `' + database_name + "`.`" + table_name + '`, caused by: ' + clean_characters(str(e)) + '"}')
+        error_message_array = ['{"failure": "retry", "failure_reason": "Unable to create table `', '`.`', '`, caused by: ', '"}']
+        str_length = max_string_length - len(''.join(error_message_array) + str(database_name) + str(table_name_impala))
+        error_message = error_message_array[0] + str(database_name) + error_message_array[1] + str(table_name_impala) + \
+                        error_message_array[2] + clean_characters(str(e)) + error_message_array[3]
+        print(error_message)
+        error_message = error_message_array[0] + str(database_name) + error_message_array[1] + str(table_name_impala) + error_message_array[2] + clean_characters(str(e))[:str_length] + error_message_array[3]
+        print(error_message)
         exit()
-
 
 HDFS_CLIENT = KerberosClient('https://master.platform.daf.gov.it:50470')
 config = configparser.ConfigParser()
@@ -104,19 +118,18 @@ config.read(".config_test")
 USER = config.get("configuration", "username")
 PW = config.get("configuration", "password")
 
-# input1 = {"id": "75", "author": "macerata_default_admin", "organization": "macerata", "dataSetName": "ECON__policy", "resourceName": "Imprese_Attive_in_Italia_per_Territorio_Settore_Ateco_e_Tempo_frequenza_mensile_"}
-# input1 = {"id": "75", "author": "macerata_default_admin", "organization": "macerata", "dataSetName": "ECON__policy", "resourceName": "Imprese_Attive_in_Italia_per_Territorio_Settore_Ateco_e_Tempo_frequenza_mensile_"}
-# input1 = {"id": "451", "author": "parco_salento_default_admin", "organization": "parco_salento", "dataSetName": "ECON__policy", "resourceName": "barbieri_e_affini"}
 input1 = json.loads(sys.stdin.read())
+max_string_length = 256
 
 author = str(input1['author'])
 organization = str(input1['organization'])
 database_name = str(input1['dataSetName'])
-table_name = str(input1['resourceName'])
+table_name_impala = str(input1['resourceName'])
+table_name_superset = str(input1['resource_superset'])
 progressive_number = str(input1['id'])
-HDFS_PATH = "/user/daf/open_data/" + organization + "/" + database_name + "/" + table_name
+HDFS_PATH = "/user/daf/open_data/" + organization + "/" + database_name + "/" + table_name_superset
 
-PAYLOAD = {"query": {"match": {"dcatapit.name":  table_name + "_" + progressive_number}}}
+PAYLOAD = {"query": {"match": {"dcatapit.name":  table_name_impala + "_" + progressive_number}}}
 
 connection_cursor = impala_connection()
 
@@ -126,5 +139,5 @@ columns, separator = get_columns()
 
 create_table(connection_cursor)
 
-print('{"failure": "false",')
-print('"failure_reason": "NONE"}')
+print('{"failure": "false", "failure_reason": "NONE"}')
+

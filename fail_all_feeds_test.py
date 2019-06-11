@@ -32,7 +32,7 @@ def get_running_id(url, header):
     return f_id
 
 
-res = requests.get(JOBS_URL, headers=HEADER, auth=(KUSER, KPW))
+res = requests.get(JOBS_URL, headers=HEADER2, auth=(KUSER, KPW))
 jobs = res.json()['data']
 print(jobs)
 for job in jobs:
@@ -42,5 +42,5 @@ for job in jobs:
     print(abandon_id_url)
     res = requests.post(abandon_id_url, headers=HEADER, auth=(KUSER, KPW))
     print("feed "+job['feedName']+" abbandonato")
-requests.post('http://127.0.0.1:8400/proxy/v1/jobs/977/fail', HEADER2, auth=(KUSER, KPW))
+requests.post('http://127.0.0.1:8400/proxy/v1/jobs/977/fail', HEADER, auth=(KUSER, KPW))
 print(res.json())
