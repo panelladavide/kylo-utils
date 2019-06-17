@@ -8,7 +8,6 @@ import configparser
 def clean_characters(input):
     try:
         input = str(input)
-        input = re.sub('[!$%^&*()+~=`{}[\]<>?\"\'./\\\]', r'', input)
         input = ' '.join(input.split())
         input = input.replace("à", "a").replace("é", "e").replace("è", "e").replace("ì", "i") \
             .replace("ò", "o").replace("ù", "u").replace("-", "_").replace(" ", "_") \
