@@ -117,7 +117,8 @@ config.read(".config_test")
 USER = config.get("configuration", "username")
 PW = config.get("configuration", "password")
 
-input1 = json.loads(sys.stdin.read())
+# input1 = json.loads(sys.stdin.read())
+input1 = {"author": "luca_test", "organization": "macerata", "dataSetName": "ECON__policy", "resourceName": "Aperture_Procedure_Concorsuali_in_Italia_per_Territorio_Settore",  "resource_superset": "Aperture_Procedure_Concorsuali_in_Italia_per_Territorio_Settore", "id" :"160"}
 max_string_length = 256
 
 author = str(input1['author'])

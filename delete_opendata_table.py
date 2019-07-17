@@ -2,12 +2,13 @@
 Script di cancellazione della tabella degli opendata:
 dopo aver preso da kafka in input un json contenente le informazioni necessarie
 si procede alla cancellazione brutale della tabella da impala
-
 """
+
 from impala.dbapi import connect
 from hdfs.ext.kerberos import KerberosClient
 import sys
 import configparser
+import json
 
 #questa funzione si connette al servizio Impala
 def impala_conn(usr, pswd):
@@ -34,8 +35,12 @@ config.read(".config_test")
 USER = config.get("configuration", "username")
 PW = config.get("configuration", "password")
 
-TABLE_TO_DROP = sys.argv[1]
+# input={"db":"", "org":"", "table": ""}
+
+# TABLE_TO_DROP = sys.argv[1]
+input = json.loads(sys.stdin.read())
 # TABLE_TO_DROP = "educ__istruzione.popolazione_scolastica_2016_2017_popolazione_scolastica_233"
+TABLE_TO_DROP = str(input['table'])
 
 # connessione ad Impala
 cur = impala_conn(USER, PW)
